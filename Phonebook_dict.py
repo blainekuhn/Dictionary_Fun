@@ -25,8 +25,6 @@ def Add_to_dict(count):
 
 def Write_to_file(data):
   log_file=path.join(os.getcwd(), "Dictionary.log")
-#  if path.exists(log_file):
-#    os.remove(log_file)
   with open(log_file, 'w') as f:
     f.close()
   for a in range(len(data["Name"])):
