@@ -8,8 +8,6 @@ fake = Faker()
 
 Dict = {"Name": [], "Address": [], "City": [], "State": [], "Zipcode": [], "Phone": []}
 
-
-
 def Add_to_dict(count):
   for x in range(count):
     Dict["Name"].insert(len(Dict["Name"]), fake.name())
@@ -21,22 +19,30 @@ def Add_to_dict(count):
   Write_to_file(Dict)
 
 
-#  return print(Dict["Name"])
-#  return print("%s lives at %s %s, %s. %s." % (Dict["Name"], Dict["Address"], Dict["City"], Dict["State"], Dict["Zipcode"]))
-  #for a in range(len(Dict["Name"])):
-    #print("%s\t\t%s\t\t%s\t%s\t%s" % (Dict["Name"][a], Dict["Address"][a], Dict["City"][a], Dict["State"][a], Dict["Zipcode"][a]))
+#  for a in range(len(Dict["Name"])):
+#    print("%s\t\t%s\t\t%s\t%s\t%s" % (Dict["Name"][a], Dict["Address"][a], Dict["City"][a], Dict["State"][a], Dict["Zipcode"][a]))
 
 
 def Write_to_file(data):
+  log_file=path.join(os.getcwd(), "Dictionary.log")
+#  if path.exists(log_file):
+#    os.remove(log_file)
+  with open(log_file, 'w') as f:
+    f.close()
   for a in range(len(data["Name"])):
-    log_file=path.join(os.getcwd(), "Dictionary.log")
-    if not path.exists(log_file):
-      with open(log_file, 'w') as f:
-        f.close()
-    with open(path.join(os.getcwd(), "Dictionary.log"), 'a') as f:
+    with open(log_file, 'a') as f:
       a_data = [data["Name"][a], data["Address"][a], data["City"][a], data["State"][a], data["Zipcode"][a], data["Phone"][a]]
       f.write(str(a_data)+'\n')
 
 
+def Read_from_file(log):
+  if path.exists(path.join(os.getcwd(), "Dictionary.log")):
+    log_file=path.join(os.getcwd(), "Dictionary.log")   
+    for line in open(log_file, 'r'):
+      print(line)
+
+
 Add_to_dict(100)
+
+Read_from_file("Dictionary.log")
 
