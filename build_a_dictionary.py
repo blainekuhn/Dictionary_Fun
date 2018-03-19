@@ -18,6 +18,7 @@ dics = {}
 key = ""
 
 def add_dic(x):
+  dic={}
   start = time.time()
   if x > 690:
     print("Please select a value under 690")
@@ -25,13 +26,13 @@ def add_dic(x):
   for n in range(x):
     while len(dic) < x:
       key = fake.first_name()
-      if not key in dic.keys():
+      if key in dic.keys():
         break
       val = fake.uri()
       dic[key] = val
   end = time.time()
   runtime = end - start
-  print("It took %s to run add_dic" % runtime)
+  #print("It took %s to run add_dic" % runtime)
   return dic
 
 
@@ -48,8 +49,8 @@ def adds_dic(x):
   return dics
 
 #print(json.load(add_dic(30)))
-adds_dic(600)
-add_dic(600)
+#adds_dic(600)
+#add_dic(60)
 
 def same_name():
   count=1
