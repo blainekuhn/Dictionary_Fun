@@ -13,56 +13,68 @@ if dic found in dic[key]
   a.append("[key]"*3)  which ends up being ['[key][key][key]']
   this could be used to ste
 
-
 """
 
 import sys, json
 from faker import Faker
 from random import randint
 fake = Faker()
-count = [0]
-def build_dic(dic_len, dic):
+count = [0, 0]
+
+dic_len = 15      ## User changable option
+depth = 200      ## User changable option
+
+
+
+def build_dic(dic_len, dic, depth):
+  if count[0] >= depth:
+    return dic
   try:
     if isinstance(dic, (list, tuple)):
       dic = dict(dic)
     if isinstance(dic, dict):
       for counter in range(len(dic)):
+        count[0]+=1
+        if count[0] < 4444444:
+          pass
         for k,v in dic.items():
           if k[0] == 'B' or k[0] == "M":
             update = [(fake.first_name(), fake.uri()) for i in range(dic_len)]
             update = dict(update)
             dic.update({k: update})
-#        count[0]+=1
   except RecursionError:
     print("too many iterations")
     print(json.dumps(dic, indent=4))
-#  if count[0] > 100*(10-1):
-#    print(count)
   return dic
 
-def walk(dic_len, dic):
-  #count[0]+=1
-  if count[0] > 10:
-    sys.exit(print(json.dumps(dic, indent=4)))
+
+def walk(dic_len, dic, depth):
+  if count[0] >= depth:
+    return dic  
   for key, item in dic.items():
-      #print(type(item))
       if isinstance(item, dict):
-        build_dic(dic_len, item)
-        walk(dic_len, item)
-        print(count)
-        count[0]+=1
+        build_dic(dic_len, item, depth)
+        walk(dic_len, item, depth)
+  check_it(count, dic_len, dic, depth)
   return dic
 
 
-dic = build_dic(10, ([(fake.first_name(), fake.uri()) for i in range(10)]))
-walk(len(dic), dic)
+def check_it(count, dic_len, dic, depth):
+  if count[0] < depth and count[0] > dic_len:
+    count[1]+=1
+    if count[1] == 20:
+      sys.exit(print("Try using a larger dic_len and run again.\n"\
+            "Unable to reach stated depth with a dic_len of %s." % dic_len))
+    print("Rebuilding...\nCurrent dictionary is only %s iterations." % count[0])
+    dic = build_dic(dic_len, ([(fake.first_name(), fake.uri()) for i in range(dic_len)]), 1)
+    if isinstance(dic, (list, tuple)):
+      dic = dict(dic)
+      count[0] = 0
+      walk(dic_len, dic, depth)
+
+
+dic = build_dic(dic_len, ([(fake.first_name(), fake.uri()) for i in range(dic_len)]), 1)
+walk(dic_len, dic, depth)
 print(json.dumps(dic, indent=4))
 
-"""
-good seeds to use:
-  5, 8, 300
-  11, 8, 460 s/m
-  10, 8, 460 m
-  `6, 8, 460 m
-  
-"""
+
