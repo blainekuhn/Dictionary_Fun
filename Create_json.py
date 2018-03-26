@@ -21,22 +21,23 @@ from random import randint
 fake = Faker()
 count = [0, 0]
 
-dic_len = 15      ## User changable option
-depth = 200      ## User changable option
+dic_len = 20      ## User changable option
+depth = 450      ## User changable option
 
 
 
 def build_dic(dic_len, dic, depth):
-  if count[0] >= depth:
+  if count[0] > depth:
     return dic
+  elif count[0] == dic_len:
+    print("short one %s " % dic_len)
+    walk(dic_len, dic, depth)
   try:
     if isinstance(dic, (list, tuple)):
       dic = dict(dic)
     if isinstance(dic, dict):
       for counter in range(len(dic)):
         count[0]+=1
-        if count[0] < 4444444:
-          pass
         for k,v in dic.items():
           if k[0] == 'B' or k[0] == "M":
             update = [(fake.first_name(), fake.uri()) for i in range(dic_len)]
